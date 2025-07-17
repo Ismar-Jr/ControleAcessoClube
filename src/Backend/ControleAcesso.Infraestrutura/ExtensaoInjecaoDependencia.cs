@@ -6,7 +6,6 @@ using ControleAcesso.Dominio.Repositorios.Socio;
 using ControleAcesso.Dominio.Repositorios.TentativaAcesso;
 using ControleAcesso.Infraestrutura.DataAccess;
 using ControleAcesso.Infraestrutura.DataAccess.Repositorios;
-using ControleAcesso.Infraestrutura.Extensoes;
 using FluentMigrator.Runner;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,10 +25,6 @@ public static class ExtensaoInjecaoDependencia
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {   
         AddRepositories(services);
-        
-        if(configuration.IsUnitTestEnviroment())
-            return;
-        
         AddDbcontext_MySqlServer(services, configuration);
         AddFluentMigrator(services, configuration);
     }
@@ -54,6 +49,7 @@ public static class ExtensaoInjecaoDependencia
         services.AddScoped<IUnidadeDeTrabalho, UnidadeDeTrabalho>();
         services.AddScoped<ISocioWriteOnlyRepositorio, SocioRepositorio>();
         services.AddScoped<ISocioReadOnlyRepositorio, SocioRepositorio>();
+        
         // Plano
         services.AddScoped<IPlanoWriteOnlyRepositorio, PlanoRepositorio>();
         services.AddScoped<IPlanoReadOnlyRepositorio, PlanoRepositorio>();

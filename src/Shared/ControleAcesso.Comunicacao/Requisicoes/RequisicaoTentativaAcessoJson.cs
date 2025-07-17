@@ -2,6 +2,6 @@
 
 public class RequisicaoTentativaAcessoJson
 {
-    public int SocioId { get; set; }
-    public int AreaId { get; set; }
+    public long SocioId { get; set; }
+    public long AreaId { get; set; }
 }

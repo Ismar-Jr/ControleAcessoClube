@@ -1,0 +1,22 @@
+﻿[
+  {
+    "Id": 100,
+    "Nome": "Plano Ouro",
+    "Ativo": true
+  },
+  {
+    "Id": 101,
+    "Nome": "Plano Prata",
+    "Ativo": true
+  },
+  {
+    "Id": 102,
+    "Nome": "Plano Bronze",
+    "Ativo": true
+  },
+  {
+    "Id": 103,
+    "Nome": "Plano Titânio",
+    "Ativo": false
+  }
+]

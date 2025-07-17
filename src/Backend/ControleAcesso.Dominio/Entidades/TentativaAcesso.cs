@@ -11,7 +11,7 @@ public class TentativaAcesso
     public long AreaId { get; set; }
     public Area Area { get; set; }
     
-    public DateTime DataHora { get; set; } = DateTime.UtcNow;
+    public DateTime DataHora { get; set; } = DateTime.Now;
     
     public ResultadoAcesso Resultado { get; set; }
 }

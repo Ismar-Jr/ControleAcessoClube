@@ -15,8 +15,8 @@ public class FiltroDeExcecoes : IExceptionFilter
     {
         if (context.Exception is ErroControleAcesso)
             HandleProjectException(context);
-        /*else
-            HandleUnknownException(context);*/
+        //else
+            //HandleUnknownException(context);
     }
 
     /// <summary>

@@ -9,51 +9,64 @@ using ControleAcesso.Dominio.Repositorios;
 
 namespace ControleAcesso.Aplicacao.UseCases.Area.Registro
 {
+    /// <summary>
+    /// Caso de uso para registro de uma nova área.
+    /// </summary>
     public class RegistroAreaUseCase : IRegistroAreaUseCase
     {
-        private readonly IAreaWriteOnlyRepositorio _writeOnlyRepository;
-        private readonly IAreaReadOnlyRepositorio _readOnlyRepository;
-        private readonly IUnidadeDeTrabalho _unitOfWork;
+        private readonly IAreaWriteOnlyRepositorio _repositorioEscrita;
+        private readonly IUnidadeDeTrabalho _unidadeDeTrabalho;
         private readonly IMapper _mapper;
-        private readonly ValidacaoRegistroArea _validator;
+        private readonly ValidacaoRegistroArea _validador;
 
+        /// <summary>
+        /// Construtor com injeção das dependências.
+        /// </summary>
         public RegistroAreaUseCase(
-            IAreaWriteOnlyRepositorio writeOnlyRepository,
-            IAreaReadOnlyRepositorio readOnlyRepository,
+            IAreaWriteOnlyRepositorio repositorioEscrita,
             IMapper mapper,
-            IUnidadeDeTrabalho unitOfWork)
+            IUnidadeDeTrabalho unidadeDeTrabalho)
         {
-            _writeOnlyRepository = writeOnlyRepository;
-            _readOnlyRepository = readOnlyRepository;
+            _repositorioEscrita = repositorioEscrita;
             _mapper = mapper;
-            _unitOfWork = unitOfWork;
-            _validator = new ValidacaoRegistroArea();
+            _unidadeDeTrabalho = unidadeDeTrabalho;
+            _validador = new ValidacaoRegistroArea();
         }
 
+        /// <summary>
+        /// Executa o registro da área a partir da requisição.
+        /// </summary>
+        /// <param name="request">Dados da área a serem cadastrados.</param>
+        /// <returns>Resposta com dados da área cadastrada.</returns>
         public async Task<RespostaRegistroAreaJson> Execute(RequisicaoRegistroAreaJson request)
         {
-            await Validate(request);
+            await Validar(request);
 
             var area = _mapper.Map<Dominio.Entidades.Area>(request);
 
-            await _writeOnlyRepository.Add(area);
-            await _unitOfWork.Commit();
+            await _repositorioEscrita.Add(area);
+            await _unidadeDeTrabalho.Commit();
 
             return new RespostaRegistroAreaJson
             {
-                Id = area.Id, 
+                Id = area.Id,
                 Nome = area.Nome
             };
         }
 
-        private Task Validate(RequisicaoRegistroAreaJson request)
+        /// <summary>
+        /// Valida os dados da requisição para registro da área.
+        /// </summary>
+        /// <param name="request">Dados da requisição.</param>
+        /// <exception cref="ErroDeValidacao">Disparada quando dados inválidos são encontrados.</exception>
+        private Task Validar(RequisicaoRegistroAreaJson request)
         {
-            var result = _validator.Validate(request);
+            var resultado = _validador.Validate(request);
 
-            if (!result.IsValid)
+            if (!resultado.IsValid)
             {
-                var errorMessages = result.Errors.Select(e => e.ErrorMessage).ToList();
-                throw new ErroDeValidacao(errorMessages);
+                var mensagensErro = resultado.Errors.Select(e => e.ErrorMessage).ToList();
+                throw new ErroDeValidacao(mensagensErro);
             }
 
             return Task.CompletedTask;
