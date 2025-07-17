@@ -15,6 +15,11 @@ public class ControleAcessoDbContext : DbContext
     
     public DbSet<Socio> Socios { get; set; }
     public DbSet<Plano> Planos { get; set; }
+    public DbSet<Area> Areas { get; set; }
+    
+    public DbSet<AreaPermitida> AreasPermitidas { get; set; }
+    public DbSet<TentativaAcesso> TentativasAcesso { get; set; }
+
     
 
     /// <summary>

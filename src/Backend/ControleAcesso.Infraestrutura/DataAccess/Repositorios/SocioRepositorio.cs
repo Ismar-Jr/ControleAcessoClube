@@ -1,40 +1,66 @@
 ﻿using ControleAcesso.Dominio.Entidades;
+using ControleAcesso.Dominio.Repositorios;
 using ControleAcesso.Dominio.Repositorios.Socio;
 using Microsoft.EntityFrameworkCore;
 
 namespace ControleAcesso.Infraestrutura.DataAccess.Repositorios;
 
 /// <summary>
-/// Implementação do repositório de socios, responsável por persistir e consultar dados no banco.
+/// Implementação do repositório de sócios, responsável por persistir e consultar dados no banco.
 /// Implementa tanto a interface de leitura quanto a de escrita.
 /// </summary>
 public class SocioRepositorio : ISocioReadOnlyRepositorio, ISocioWriteOnlyRepositorio
 {
-    // Referência para o contexto do banco de dados (EF Core), injetado via construtor.
     private readonly ControleAcessoDbContext _dbContext;
+    private readonly IUnidadeDeTrabalho _unidadeDeTrabalho;
 
-    /// <summary>
-    /// Construtor que injeta o DbContext da aplicação.
-    /// </summary>
-    /// <param name="dbContext">Instância do contexto do banco de dados.</param>
-    public SocioRepositorio(ControleAcessoDbContext dbContext) => _dbContext = dbContext;
+    public SocioRepositorio(ControleAcessoDbContext dbContext, IUnidadeDeTrabalho unidadeDeTrabalho)
+    {
+        _dbContext = dbContext;
+        _unidadeDeTrabalho = unidadeDeTrabalho;
+    }
 
-    /// <summary>
-    /// Adiciona um novo usuário ao banco de dados.
-    /// A operação ainda não é persistida no banco até que SaveChangesAsync seja chamado (normalmente pela Unit of Work).
-    /// </summary>
-    /// <param name="socio">Entidade de usuário a ser adicionada.</param>
     public async Task Add(Socio socio)
     {
         await _dbContext.Socios.AddAsync(socio);
-    } 
+    }
+
+    public async Task<bool> ExistActiveUserWithCpf(string cpf) =>
+        await _dbContext.Socios.AnyAsync(socio => socio.Cpf == cpf && socio.Ativo);
+    
+    public async Task<bool> ExistActiveUserWithEmail(string email) =>
+        await _dbContext.Socios.AnyAsync(socio => socio.Email == email && socio.Ativo);
 
     /// <summary>
-    /// Verifica se existe um usuário ativo com o CPF informado.
-    /// Retorna true se o CPF já estiver em uso por um usuário com status ativo.
+    /// Obtém um sócio pelo ID, incluindo o plano e as áreas permitidas (se necessário).
     /// </summary>
-    /// <param name="cpf">CPF a ser verificado.</param>
-    /// <returns>True se existir um usuário ativo com o CPF informado, false caso contrário.</returns>
-    public async Task<bool> ExistActiveUserWithCpf(string cpf) =>
-        await _dbContext.Socios.AnyAsync(socio => socio.Cpf.Equals(cpf) && socio.Ativo);
+    public async Task<Socio?> ObterPorIdAsync(long id)
+    {
+        return await _dbContext.Socios
+            .Include(s => s.Plano)
+            .ThenInclude(p => p.AreasPermitidas)
+            .ThenInclude(ap => ap.Area)
+            .FirstOrDefaultAsync(s => s.Id == id && s.Ativo);
+    }
+
+    /// <summary>
+    /// Lista todos os sócios ativos.
+    /// </summary>
+    public async Task<IEnumerable<Socio>> ListarAtivosAsync()
+    {
+        return await _dbContext.Socios
+            .Where(s => s.Ativo)
+            .Include(s => s.Plano)
+            .ToListAsync();
+    }
+
+    /// <summary>
+    /// Atualiza os dados de um sócio.
+    /// </summary>
+    public async Task AtualizarAsync(Socio socio)
+    {
+        _dbContext.Socios.Update(socio);
+        await _unidadeDeTrabalho.Commit();
+        await Task.CompletedTask; // Para manter assinatura async, pois Update é síncrono.
+    }
 }

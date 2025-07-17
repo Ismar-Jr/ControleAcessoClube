@@ -1,6 +1,9 @@
 ﻿using System.Reflection;
 using ControleAcesso.Dominio.Repositorios;
+using ControleAcesso.Dominio.Repositorios.Area;
+using ControleAcesso.Dominio.Repositorios.Plano;
 using ControleAcesso.Dominio.Repositorios.Socio;
+using ControleAcesso.Dominio.Repositorios.TentativaAcesso;
 using ControleAcesso.Infraestrutura.DataAccess;
 using ControleAcesso.Infraestrutura.DataAccess.Repositorios;
 using ControleAcesso.Infraestrutura.Extensoes;
@@ -51,6 +54,17 @@ public static class ExtensaoInjecaoDependencia
         services.AddScoped<IUnidadeDeTrabalho, UnidadeDeTrabalho>();
         services.AddScoped<ISocioWriteOnlyRepositorio, SocioRepositorio>();
         services.AddScoped<ISocioReadOnlyRepositorio, SocioRepositorio>();
+        // Plano
+        services.AddScoped<IPlanoWriteOnlyRepositorio, PlanoRepositorio>();
+        services.AddScoped<IPlanoReadOnlyRepositorio, PlanoRepositorio>();
+
+        // Área
+        services.AddScoped<IAreaWriteOnlyRepositorio, AreaRepositorio>();
+        services.AddScoped<IAreaReadOnlyRepositorio, AreaRepositorio>();
+
+        // Tentativa de Acesso
+        services.AddScoped<ITentativaAcessoWriteOnlyRepositorio, TentativaAcessoRepositorio>();
+
     }
 
     /// <summary>

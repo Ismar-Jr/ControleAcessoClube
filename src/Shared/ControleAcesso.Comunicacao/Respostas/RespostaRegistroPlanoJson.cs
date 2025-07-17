@@ -1,6 +1,10 @@
-﻿namespace ControleAcesso.Comunicacao.Respostas;
+﻿using ControleAcesso.Dominio.Entidades;
 
-public class RespostaRegistroPlanoJson
+namespace ControleAcesso.Comunicacao.Respostas
 {
-    public string? Nome { get; set; }
+    public class RespostaRegistroPlanoJson
+    {
+        public string? Nome { get; set; }
+        
+    }
 }

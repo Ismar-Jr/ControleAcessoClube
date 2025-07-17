@@ -15,8 +15,8 @@ public class FiltroDeExcecoes : IExceptionFilter
     {
         if (context.Exception is ErroControleAcesso)
             HandleProjectException(context);
-        else
-            HandleUnknownException(context);
+        /*else
+            HandleUnknownException(context);*/
     }
 
     /// <summary>
@@ -35,10 +35,10 @@ public class FiltroDeExcecoes : IExceptionFilter
     /// <summary>
     /// Trata exceções inesperadas, retornando erro genérico 500 sem expor detalhes sensíveis.
     /// </summary>
-    private void HandleUnknownException(ExceptionContext context)
+    /*private void HandleUnknownException(ExceptionContext context)
     {
         context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
         var response = new RespostaErroJson(new List<string> { "Erro inesperado. Tente novamente mais tarde." });
         context.Result = new ObjectResult(response) { StatusCode = StatusCodes.Status500InternalServerError };
-    }
+    }*/
 }

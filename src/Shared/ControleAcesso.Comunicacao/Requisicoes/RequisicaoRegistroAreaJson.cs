@@ -2,5 +2,5 @@
 
 public class RequisicaoRegistroAreaJson
 {
-    
+    public string? Nome { get; set; }
 }

@@ -1,8 +1,10 @@
 ﻿using ControleAcesso.Aplicacao.Servicos.AutoMapper;
 using ControleAcesso.Aplicacao.Servicos.Criptografia;
 using ControleAcesso.Aplicacao.Socio.Registro;
+using ControleAcesso.Aplicacao.UseCases.Area.Registro;
 using ControleAcesso.Aplicacao.UseCases.Plano.Registro;
 using ControleAcesso.Aplicacao.UseCases.Socio.Registro;
+using ControleAcesso.Aplicacao.UseCases.TentativaAcesso.Registro;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 
@@ -41,6 +43,8 @@ public static class ExtensaoInjecaoDependencia
     {
         services.AddScoped<IRegistroSocioUseCase, RegistroSocioUseCase>();
         services.AddScoped<IRegistroPlanoUseCase, RegistroPlanoUseCase>();
+        services.AddScoped<IRegistroAreaUseCase, RegistroAreaUseCase>();
+        services.AddScoped<IRegistrarTentativaAcessoUseCase, RegistrarTentativaAcessoUseCase>();
     }
 
     /// <summary>
