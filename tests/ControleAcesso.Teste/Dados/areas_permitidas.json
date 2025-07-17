@@ -1,0 +1,34 @@
+﻿[
+  {
+    "PlanoId": 100,
+    "AreaId": 200
+  },
+  {
+    "PlanoId": 100,
+    "AreaId": 201
+  },
+  {
+    "PlanoId": 100,
+    "AreaId": 202
+  },
+  {
+    "PlanoId": 100,
+    "AreaId": 203
+  },
+  {
+    "PlanoId": 100,
+    "AreaId": 204
+  },
+  {
+    "PlanoId": 101,
+    "AreaId": 200
+  },
+  {
+    "PlanoId": 101,
+    "AreaId": 201
+  },
+  {
+    "PlanoId": 102,
+    "AreaId": 200
+  }
+]

@@ -1,0 +1,32 @@
+﻿[
+  {
+    "Id": 1,
+    "Nome": "João",
+    "Ativo": true,
+    "PlanoId": 100
+  },
+  {
+    "Id": 2,
+    "Nome": "Maria",
+    "Ativo": true,
+    "PlanoId": 101
+  },
+  {
+    "Id": 3,
+    "Nome": "Marcos",
+    "Ativo": true,
+    "PlanoId": 102
+  },
+  {
+    "Id": 4,
+    "Nome": "Fernanda",
+    "Ativo": false,
+    "PlanoId": 102
+  },
+  {
+    "Id": 5,
+    "Nome": "José",
+    "Ativo": true,
+    "PlanoId": 103
+  }
+]
